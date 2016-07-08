@@ -3,7 +3,7 @@
 # | Java project lines of code counter            |
 # +-----------------------------------------------+
 # | Author: Matjaž <dev@matjaz.it> matjaz.it      |
-# | v2.8.1 2015-05-06                             |
+# | v2.8.2 2015-09-09                             |
 # +-----------------------------------------------+
 # | DESCRIPTION AND USAGE                         |
 # +-----------------------------------------------+
@@ -20,9 +20,7 @@
 # +-----------------------------------------------+
 # | SOFTWARE LICENCE                              |
 # +-----------------------------------------------+
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# This Source Code Form is subject to the terms of the BSD 3-Clause License
 
 
 # +-----------------------------------------------+
@@ -41,6 +39,18 @@ divider_plus="+-----------------------------------------------+"
 
 # Needed for a unique floating point symbol (dot)
 export LC_NUMERIC="en_US.UTF-8"
+
+function spinner_icon() {
+    if (( $1 % 4 == 0 ))
+        then printf "◐"
+    elif (( $1 % 4 == 1 ))
+        then printf "◓"
+    elif (( $1 % 4 == 2 ))
+        then printf "◑"
+    else
+        printf "◒"
+    fi
+}
 
 function float_ratio() {
 	# Call bc to perform the float division
@@ -77,8 +87,8 @@ do
 	# | PRINT STATUS OF THE ANALYSIS                  |
 	# +-----------------------------------------------+
 	(( i += 1 ))
-	printf "Analyzing files %5.2f%%...\r" \
-		$(float_ratio $i*100 $project_java_files)
+	printf "Analyzing file %3d of %3d: %5.2f%%... %s\r" \
+        $i $project_java_files $(float_ratio $i*100 $project_java_files) $(spinner_icon $i)
 
 
 	# +-----------------------------------------------+
